@@ -1,0 +1,261 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isEnumeration": "cr:isEnumeration",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "alternateName": "Mileage per gallon performances of various cars",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "license": {
+    "@type": "sc:CreativeWork",
+    "name": "CC0: Public Domain",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  "distribution": [
+    {
+      "contentUrl": "https://www.kaggle.com/api/v1/datasets/download/uciml/autompg-dataset?datasetVersionNumber=3",
+      "contentSize": "6.31 KB",
+      "md5": "DotAQL4fKD7ySXotbPe/5g==",
+      "encodingFormat": "application/zip",
+      "@id": "archive.zip",
+      "@type": "cr:FileObject",
+      "name": "archive.zip",
+      "description": "Archive containing all the contents of the Auto-mpg dataset dataset"
+    },
+    {
+      "contentUrl": "auto-mpg.csv",
+      "containedIn": {
+        "@id": "archive.zip"
+      },
+      "encodingFormat": "application/vnd.ms-excel",
+      "@id": "auto-mpg.csv_fileobject",
+      "@type": "cr:FileObject",
+      "name": "auto-mpg.csv",
+      "description": "Auto-mpg csv file. This file contains column header"
+    }
+  ],
+  "recordSet": [
+    {
+      "field": [
+        {
+          "dataType": [
+            "sc:Float"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "auto-mpg.csv_fileobject"
+            },
+            "extract": {
+              "column": "mpg"
+            }
+          },
+          "@id": "auto-mpg.csv/mpg",
+          "@type": "cr:Field",
+          "name": "mpg"
+        },
+        {
+          "dataType": [
+            "sc:Integer"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "auto-mpg.csv_fileobject"
+            },
+            "extract": {
+              "column": "cylinders"
+            }
+          },
+          "@id": "auto-mpg.csv/cylinders",
+          "@type": "cr:Field",
+          "name": "cylinders"
+        },
+        {
+          "dataType": [
+            "sc:Float"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "auto-mpg.csv_fileobject"
+            },
+            "extract": {
+              "column": "displacement"
+            }
+          },
+          "@id": "auto-mpg.csv/displacement",
+          "@type": "cr:Field",
+          "name": "displacement"
+        },
+        {
+          "dataType": [
+            "sc:Text"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "auto-mpg.csv_fileobject"
+            },
+            "extract": {
+              "column": "horsepower"
+            }
+          },
+          "@id": "auto-mpg.csv/horsepower",
+          "@type": "cr:Field",
+          "name": "horsepower"
+        },
+        {
+          "dataType": [
+            "sc:Integer"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "auto-mpg.csv_fileobject"
+            },
+            "extract": {
+              "column": "weight"
+            }
+          },
+          "@id": "auto-mpg.csv/weight",
+          "@type": "cr:Field",
+          "name": "weight"
+        },
+        {
+          "dataType": [
+            "sc:Float"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "auto-mpg.csv_fileobject"
+            },
+            "extract": {
+              "column": "acceleration"
+            }
+          },
+          "@id": "auto-mpg.csv/acceleration",
+          "@type": "cr:Field",
+          "name": "acceleration"
+        },
+        {
+          "dataType": [
+            "sc:Integer"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "auto-mpg.csv_fileobject"
+            },
+            "extract": {
+              "column": "model year"
+            }
+          },
+          "@id": "auto-mpg.csv/model+year",
+          "@type": "cr:Field",
+          "name": "model year"
+        },
+        {
+          "dataType": [
+            "sc:Integer"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "auto-mpg.csv_fileobject"
+            },
+            "extract": {
+              "column": "origin"
+            }
+          },
+          "@id": "auto-mpg.csv/origin",
+          "@type": "cr:Field",
+          "name": "origin",
+          "description": "length"
+        },
+        {
+          "dataType": [
+            "sc:Text"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "auto-mpg.csv_fileobject"
+            },
+            "extract": {
+              "column": "car name"
+            }
+          },
+          "@id": "auto-mpg.csv/car+name",
+          "@type": "cr:Field",
+          "name": "car name"
+        }
+      ],
+      "@id": "auto-mpg.csv",
+      "@type": "cr:RecordSet",
+      "name": "auto-mpg.csv",
+      "description": "Auto-mpg csv file. This file contains column header"
+    }
+  ],
+  "version": 3,
+  "keywords": [
+    "subject > science and technology > transportation > automobiles and vehicles",
+    "subject > earth and nature"
+  ],
+  "isAccessibleForFree": true,
+  "includedInDataCatalog": {
+    "@type": "sc:DataCatalog",
+    "name": "Kaggle",
+    "url": "https://www.kaggle.com"
+  },
+  "creator": {
+    "@type": "sc:Organization",
+    "name": "UCI Machine Learning",
+    "url": "/organizations/uciml",
+    "image": "https://storage.googleapis.com/kaggle-organizations/7/thumbnail.png"
+  },
+  "publisher": {
+    "@type": "sc:Organization",
+    "name": "Kaggle",
+    "url": "https://www.kaggle.com/organizations/kaggle",
+    "image": "https://storage.googleapis.com/kaggle-organizations/4/thumbnail.png"
+  },
+  "thumbnailUrl": "https://storage.googleapis.com/kaggle-datasets-images/1489/2667/d7895dcd2db5e0cfda19c3edc2f2d410/dataset-card.jpg",
+  "dateModified": "2017-07-02T05:25:54.79",
+  "datePublished": "2017-06-28T10:09:21.393",
+  "@type": "sc:Dataset",
+  "name": "Auto-mpg dataset",
+  "url": "https://www.kaggle.com/datasets/uciml/autompg-dataset/versions/3",
+  "description": "### Context\n\nThe data is technical spec of cars. The dataset is downloaded from UCI Machine Learning Repository\n\n\n### Content\n\n1. Title: Auto-Mpg Data\n\n2. Sources:\n   (a) Origin:  This dataset was taken from the StatLib library which is\n                maintained at Carnegie Mellon University. The dataset was \n                used in the 1983 American Statistical Association Exposition.\n   (c) Date: July 7, 1993\n\n3. Past Usage:\n    -  See 2b (above)\n    -  Quinlan,R. (1993). Combining Instance-Based and Model-Based Learning.\n       In Proceedings on the Tenth International Conference of Machine \n       Learning, 236-243, University of Massachusetts, Amherst. Morgan\n       Kaufmann.\n\n4. Relevant Information:\n\n   This dataset is a slightly modified version of the dataset provided in\n   the StatLib library.  In line with the use by Ross Quinlan (1993) in\n   predicting the attribute \"mpg\", 8 of the original instances were removed \n   because they had unknown values for the \"mpg\" attribute.  The original \n   dataset is available in the file \"auto-mpg.data-original\".\n\n   \"The data concerns city-cycle fuel consumption in miles per gallon,\n    to be predicted in terms of 3 multivalued discrete and 5 continuous\n    attributes.\" (Quinlan, 1993)\n\n5. Number of Instances: 398\n\n6. Number of Attributes: 9 including the class attribute\n\n7. Attribute Information:\n\n    1. mpg:           continuous\n    2. cylinders:     multi-valued discrete\n    3. displacement:  continuous\n    4. horsepower:    continuous\n    5. weight:        continuous\n    6. acceleration:  continuous\n    7. model year:    multi-valued discrete\n    8. origin:        multi-valued discrete\n    9. car name:      string (unique for each instance)\n\n8. Missing Attribute Values:  horsepower has 6 missing values\n\n### Acknowledgements\n\nDataset: UCI Machine Learning Repository \nData link : https://archive.ics.uci.edu/ml/datasets/auto+mpg\n\n\n### Inspiration\n\nI have used this dataset for practicing my exploratory analysis skills."
+}
