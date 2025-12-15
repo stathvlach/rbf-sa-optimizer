@@ -35,7 +35,12 @@ All experiments and visualizations in this repository are presented through **Ju
 You can execute the notebooks directly in your browser using Binder.
 Click below to launch the main demonstration notebook:
 
-**[![A simple demonstration of training an RBF model to approximate a noisy 1D sine wave.](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stathvlach/rbf-sa-optimizer/HEAD?filepath=notebooks%2F01_rbf_sine_demo.ipynb)**
+**[A simple demonstration of training an RBF model to approximate a noisy 1D sine
+wave.](https://mybinder.org/v2/gh/stathvlach/rbf-sa-optimizer/HEAD?filepath=notebooks%2F01_rbf_sine_demo_kmeans.ipynb)**
+
+**[A demonstration of training an RBF model using fuzzy means algorithm to approximate a synthetic two-dimensional
+nonlinear surface with mixed curvature.
+](https://mybinder.org/v2/gh/stathvlach/rbf-sa-optimizer/HEAD?filepath=notebooks%2F02_rbf_sine_demo_fuzzymeans.ipynb)**
 
 ---
 
