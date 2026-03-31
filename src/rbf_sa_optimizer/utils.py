@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.cluster import KMeans
-
+from scipy.spatial.distance import cdist
 
 def fuzzymeans(X, partitions):
     """
@@ -190,40 +190,63 @@ def kmeans_clustering(X: np.ndarray, n_clusters: int):
     return kmeans.cluster_centers_
 
 
-def compute_adaptive_sigma(centers: np.ndarray, n_neighbors: int):
+def compute_adaptive_sigma(centers: np.ndarray, n_neighbors: int = 2) -> np.ndarray:
     """
-    Compute an adaptive sigma value for each RBF center using the mean distance
-    to its k nearest neighboring centers.
+    Compute per-center width parameters (sigma) based on local neighborhood density.
+
+    Each RBF center requires a width parameter (sigma) that controls the "reach"
+    of its Gaussian basis function. This function estimates sigma for each center
+    by measuring the average distance to its k-nearest neighbors among all centers.
+    Centers in dense regions receive smaller sigmas (narrow Gaussians), while
+    isolated centers receive larger sigmas (broad Gaussians). This adaptive approach
+    avoids manual tuning and allows the RBF network to naturally adjust to the
+    local structure of the discovered centers.
+
+    The strategy is non-iterative: it computes all pairwise distances once and
+    uses efficient partitioning to extract the k-nearest neighbors per center.
 
     Parameters
     ----------
-    centers : np.ndarray of shape (n_centers, n_features)
-        The RBF centers.
+    centers : ndarray of shape (n_centers, n_features)
+        The RBF center locations, typically discovered by a center-selection
+        algorithm like fuzzy-means.
 
-    n_neighbors : int
-        Number of nearest centers to use when estimating each sigma.
+    n_neighbors : int, default=2
+        Number of nearest neighbors to consider when estimating sigma for each
+        center. Typical values: 2-5. Higher values smooth the width estimates;
+        lower values make them more sensitive to local density. If n_neighbors
+        exceeds the number of available neighbors (n_centers - 1), it is
+        automatically clamped.
 
     Returns
     -------
-    sigmas : np.ndarray of shape (n_centers,)
-        Adaptive sigma values, one per center.
+    sigmas : ndarray of shape (n_centers,)
+        Estimated width parameter for each center. All values are positive
+        (minimum 1e-9 to avoid numerical issues). sigmas[i] represents the
+        width of the Gaussian basis function centered at centers[i].
+
+    Notes
+    -----
+    - If only one center exists, returns an array of ones (no neighbor information).
+    - Centers that are identical or very close will receive very small sigmas.
+    - The function is deterministic and has O(n_centers²) complexity due to
+      pairwise distance computation.
     """
     centers = np.asarray(centers, dtype=float)
+    n_centers = centers.shape[0]
+    actual_k = min(n_neighbors, n_centers - 1)
 
-    # Pairwise distances between centers (M, M)
-    diff = centers[:, None, :] - centers[None, :, :]
-    dist = np.linalg.norm(diff, axis=2)
+    if actual_k < 1:
+        return np.ones(n_centers, dtype=float)
 
-    # Prevent selecting the center itself by replacing the diagonal with +inf
-    np.fill_diagonal(dist, np.inf)
+    dist = cdist(centers, centers, metric='euclidean')
 
-    # Indices of k nearest neighbors for each center (M, k)
-    nearest_idx = np.argpartition(dist, kth=n_neighbors, axis=1)[:, :n_neighbors]
-
-    # Corresponding neighbor distances (M, k)
-    nearest_dists = np.take_along_axis(dist, nearest_idx, axis=1)
-
-    # Adaptive sigma_i = mean distance to k nearest neighbors
+    # k+1 because the 0-distance (self) is included
+    partitioned_idx = np.argpartition(dist, kth=actual_k, axis=1)
+    nearest_dists = np.take_along_axis(dist, partitioned_idx, axis=1)[:, 1 : actual_k + 1]
     sigmas = nearest_dists.mean(axis=1)
+
+    # avoid sigma=0 if centers are identical
+    sigmas = np.maximum(sigmas, 1e-9)
 
     return sigmas
