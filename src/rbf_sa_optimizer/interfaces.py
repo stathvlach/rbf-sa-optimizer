@@ -137,3 +137,12 @@ class SigmaStrategy(Protocol):
           identical centers, empty centers), document this behavior clearly.
         """
         ...
+
+@runtime_checkable
+class RBFClustering(Protocol):
+    """
+    """
+    def __call__(self, X: np.ndarray, **kwargs: Any) -> np.ndarray:
+        """
+        """
+        ...

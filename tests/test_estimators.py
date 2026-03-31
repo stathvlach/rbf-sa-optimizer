@@ -5,7 +5,7 @@ from sklearn.datasets import make_regression
 from sklearn.metrics import mean_squared_error
 from rbf_sa_optimizer.estimators import RBFEstimator
 from rbf_sa_optimizer.kernels import GaussianKernel
-from rbf_sa_optimizer.utils import compute_adaptive_sigma
+from rbf_sa_optimizer.utils import compute_adaptive_sigma, fuzzymeans
 from functools import partial
 
 
@@ -14,17 +14,16 @@ def test_rbf_estimator_basic_flow():
     """
     X, y = make_regression(n_samples=50, n_features=2, noise=0.1, random_state=42)
     
-    partitions = np.array([3, 3])
+    params = {'partitions': np.array([3, 3])}
     sigma_strat = partial(compute_adaptive_sigma, n_neighbors=2)
     kernel = GaussianKernel(sigma_strategy=sigma_strat)
     
-    model = RBFEstimator(partitions=partitions, kernel=kernel, alpha=0.1)
+    model = RBFEstimator(kernel=kernel, clustering_func=fuzzymeans, clustering_params=params, alpha=0.1)
     
     model.fit(X, y)
     assert hasattr(model, "centers_"), "The estimator must expose the centers after fitting."
     assert hasattr(model, "pipeline_"), "The internal pipeline should be instantiated."
     
-    # Έλεγχος Predict
     y_pred = model.predict(X)
     assert y_pred.shape == y.shape
     assert np.all(np.isfinite(y_pred)), "Predictions must be finite numbers."
@@ -33,7 +32,8 @@ def test_rbf_estimator_basic_flow():
 def test_rbf_estimator_unfitted_error():
     """
     """
-    model = RBFEstimator(partitions=[3, 3], kernel=None)
+    params = {'partitions': np.array([3, 3])}
+    model = RBFEstimator(kernel=None, clustering_func=fuzzymeans, clustering_params=params)
     with pytest.raises(Exception): # NotFittedError
         model.predict(np.random.rand(5, 2))
 
@@ -45,7 +45,8 @@ def test_rbf_estimator_score():
     
     sigma_strat = partial(compute_adaptive_sigma, n_neighbors=2)
     kernel = GaussianKernel(sigma_strategy=sigma_strat)
-    model = RBFEstimator(partitions=[3, 3, 3], kernel=kernel)
+    params = {'partitions': np.array([3, 3, 3])}
+    model = RBFEstimator(kernel=kernel, clustering_func=fuzzymeans, clustering_params=params)
     
     model.fit(X, y)
     r2_score = model.score(X, y)
@@ -68,10 +69,10 @@ def test_rbf_estimator_sine_curve_fit():
     # y_scaled from (200, 1) to (200,)
     y_scaled = y_scaled.ravel() 
 
-    partitions = np.array([25])  # adjust this
+    params = {'partitions': np.array([25])}  # adjust this
     sigma_strat = partial(compute_adaptive_sigma, n_neighbors=3)
     kernel = GaussianKernel(sigma_strategy=sigma_strat)
-    model = RBFEstimator(partitions=partitions, kernel=kernel, alpha=0.01)
+    model = RBFEstimator(kernel=kernel, clustering_func=fuzzymeans, alpha=0.01, clustering_params=params)
 
     model.fit(X_scaled, y_scaled)
 

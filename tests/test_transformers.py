@@ -1,19 +1,20 @@
 import numpy as np
 import pytest
 from sklearn.datasets import make_regression
-from rbf_sa_optimizer.transformers import FuzzyMeansTransformer
+from rbf_sa_optimizer.transformers import RBFTransformer
 from rbf_sa_optimizer.kernels import GaussianKernel
-from rbf_sa_optimizer.utils import compute_adaptive_sigma
+from rbf_sa_optimizer.utils import compute_adaptive_sigma, fuzzymeans
 from functools import partial
+
 
 def test_fuzzy_means_transformer_integration():
     X, _ = make_regression(n_samples=100, n_features=2, random_state=42)
     
-    partitions = np.array([3, 3])
+    params ={ 'partitions': np.array([3, 3]) }
     sigma_strat = partial(compute_adaptive_sigma, n_neighbors=2)
     kernel = GaussianKernel(sigma_strategy=sigma_strat)
     
-    transformer = FuzzyMeansTransformer(partitions=partitions, kernel=kernel)
+    transformer = RBFTransformer(clustering_func=fuzzymeans, kernel=kernel, clustering_params=params)
     transformer.fit(X)
     
     n_centers_found = transformer.centers_.shape[0]
