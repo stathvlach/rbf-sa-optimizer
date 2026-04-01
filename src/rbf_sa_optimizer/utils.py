@@ -192,45 +192,6 @@ def kmeans_clustering(X: np.ndarray, n_clusters: int):
 
 def compute_adaptive_sigma(centers: np.ndarray, n_neighbors: int = 2) -> np.ndarray:
     """
-    Compute per-center width parameters (sigma) based on local neighborhood density.
-
-    Each RBF center requires a width parameter (sigma) that controls the "reach"
-    of its Gaussian basis function. This function estimates sigma for each center
-    by measuring the average distance to its k-nearest neighbors among all centers.
-    Centers in dense regions receive smaller sigmas (narrow Gaussians), while
-    isolated centers receive larger sigmas (broad Gaussians). This adaptive approach
-    avoids manual tuning and allows the RBF network to naturally adjust to the
-    local structure of the discovered centers.
-
-    The strategy is non-iterative: it computes all pairwise distances once and
-    uses efficient partitioning to extract the k-nearest neighbors per center.
-
-    Parameters
-    ----------
-    centers : ndarray of shape (n_centers, n_features)
-        The RBF center locations, typically discovered by a center-selection
-        algorithm like fuzzy-means.
-
-    n_neighbors : int, default=2
-        Number of nearest neighbors to consider when estimating sigma for each
-        center. Typical values: 2-5. Higher values smooth the width estimates;
-        lower values make them more sensitive to local density. If n_neighbors
-        exceeds the number of available neighbors (n_centers - 1), it is
-        automatically clamped.
-
-    Returns
-    -------
-    sigmas : ndarray of shape (n_centers,)
-        Estimated width parameter for each center. All values are positive
-        (minimum 1e-9 to avoid numerical issues). sigmas[i] represents the
-        width of the Gaussian basis function centered at centers[i].
-
-    Notes
-    -----
-    - If only one center exists, returns an array of ones (no neighbor information).
-    - Centers that are identical or very close will receive very small sigmas.
-    - The function is deterministic and has O(n_centers²) complexity due to
-      pairwise distance computation.
     """
     centers = np.asarray(centers, dtype=float)
     n_centers = centers.shape[0]
